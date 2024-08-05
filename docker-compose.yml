@@ -11,6 +11,7 @@ services:
       SONAR_JDBC_USERNAME: ${SONAR_JDBC_USERNAME}
       SONAR_JDBC_PASSWORD: ${SONAR_JDBC_PASSWORD}
       SONAR_JAVA_OPTS: "-Xmx512m -Xms512m"
+      SONAR_SEARCH_JAVA_OPTS: "-Xms512m -Xmx1g"
     deploy:
       resources:
         limits:
