@@ -10,3 +10,8 @@ services:
       SONAR_JDBC_URL: ${SONAR_JDBC_URL}
       SONAR_JDBC_USERNAME: ${SONAR_JDBC_USERNAME}
       SONAR_JDBC_PASSWORD: ${SONAR_JDBC_PASSWORD}
+      SONAR_JAVA_OPTS: "-Xmx512m -Xms512m"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
