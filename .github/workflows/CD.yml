@@ -22,10 +22,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           
-    - name: Build and push Docker images
-      run: |
-        docker-compose -f docker-compose.yml build
-        docker-compose -f docker-compose.yml push
+
+    - uses: actions/checkout@v3
+      name: Check out code
+
+    - uses: mr-smithers-excellent/docker-build-push@v6
+      name: Build & push Docker image
+      with:
+        image: docker-hub-repo/sonar-service
+        registry: docker.io
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Deploy Railway
       uses: bervProject/railway-deploy@main
