@@ -13,29 +13,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
+    - name: Deploy to Railway
       with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
-
-    - uses: actions/checkout@v3
-      name: Check out code
-
-    - uses: mr-smithers-excellent/docker-build-push@v6
-      name: Build & push Docker image
-      with:
-        image: docker-hub-repo/sonar-service
-        registry: docker.io
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - name: Deploy Railway
-      uses: bervProject/railway-deploy@main
-      with:
-        railway_token:  ${{ secrets.RAILWAY_TOKEN }} 
-        service:  ${{ secrets.RAILWAY_SERVICE }} 
+        railway_token:  ${{ secrets.RAILWAY_TOKEN }}
+        service:  ${{ secrets.RAILWAY_SERVICE }}
+      env:
+        SONAR_JDBC_URL: ${{ secrets.SONAR_JDBC_URL }}
+        SONAR_JDBC_USERNAME: ${{ secrets.SONAR_JDBC_USERNAME }}
+        SONAR_JDBC_PASSWORD: ${{ secrets.SONAR_JDBC_PASSWORD }}
+      run: |
+          railway up --detach --build-only
+          docker-compose -f docker-compose.yml up -d
